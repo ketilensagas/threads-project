@@ -1,11 +1,12 @@
+
 import requests
 import time
 import csv
 import random
 import concurrent.futures
 
+from bs4  import BeautifulSoup
 
-from bs4 import BeautifulSoup
 
 # global headers to be used for requests
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -23,16 +24,19 @@ def extract_movie_details(movie_link):
         title = None
         date = None
 
-        movie_data = movie_soup.find('div', attrs={'class': 'title_wrapper'})
+        movie_data = movie_soup.find('div', attrs={'class': 'sc-80d43141 fbQftq'})
         if movie_data is not None:
             title = movie_data.find('h1').get_text()
-            date = movie_data.find('a', attrs={'title': 'See more release dates'}).get_text().strip()
+            # print(title)
+            date = movie_data.find('span', attrs={'class': 'sc-8c396aa2-2 itZqyK'}).get_text().strip()
+            # print(date)
 
-        rating = movie_soup.find('span', attrs={'itemprop': 'ratingValue'}).get_text() if movie_soup.find(
-            'span', attrs={'itemprop': 'ratingValue'}) else None
+        rating = movie_soup.find('span', attrs={'class': 'sc-7ab21ed2-1 jGRxWM'}).get_text() if movie_soup.find(
+            'span', attrs={'class': 'sc-7ab21ed2-1 jGRxWM'}) else None
+        # print(rating)
 
-        plot_text = movie_soup.find('div', attrs={'class': 'summary_text'}).get_text().strip() if movie_soup.find(
-            'div', attrs={'class': 'summary_text'}) else None
+        plot_text = movie_soup.find('span', attrs={'class': 'sc-16ede01-0 fMPjMP'}).get_text().strip() if movie_soup.find(
+            'span', attrs={'class': 'sc-16ede01-0 fMPjMP'}) else None
 
         with open('movies.csv', mode='a') as file:
             movie_writer = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
