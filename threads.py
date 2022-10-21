@@ -24,7 +24,7 @@ def extract_movie_details(movie_link):
         title = None
         date = None
 
-        movie_data = movie_soup.find('div', attrs={'class': 'sc-80d43141 fbQftq'})
+        movie_data = movie_soup.find('div', attrs={'class': 'sc-80d4314-1 fbQftq'})
         if movie_data is not None:
             title = movie_data.find('h1').get_text()
             # print(title)
